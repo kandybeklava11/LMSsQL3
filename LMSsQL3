@@ -1,0 +1,43 @@
+CREATE VIEW orders_details AS
+SELECT o.order_date, o.required_date, o.shipped_date, o.ship_postal_code, c.company_name, c.contact_name, c.phone, e.last_name, e.first_name, e.title
+FROM orders o
+         JOIN customers c ON o.customer_id = c.customer_id
+         JOIN employees e ON o.employee_id = e.employee_id;
+
+
+SELECT *
+FROM orders_details
+WHERE order_date > '1997-01-01';
+
+
+----
+
+CREATE VIEW orders_details AS
+SELECT o.order_date, o.required_date, o.shipped_date, o.ship_postal_code, c.ship_country, c.company_name, c.contact_name, c.phone, e.last_name, e.first_name, e.title
+FROM orders o
+         JOIN customers c ON o.customer_id = c.customer_id
+         JOIN employees e ON o.employee_id = e.employee_id;
+
+
+ALTER VIEW orders_details
+    ADD ship_country VARCHAR(50),
+    ADD postal_code VARCHAR(20),
+    ADD reports_to VARCHAR(50);
+
+
+DROP VIEW IF EXISTS renamed_orders_details;
+ALTER VIEW orders_details RENAME TO renamed_orders_details;
+
+CREATE VIEW orders_details AS
+SELECT o.order_date, o.required_date, o.shipped_date, o.ship_postal_code, c.ship_country, c.company_name, c.contact_name, c.phone, e.last_name, e.first_name, e.title, c.postal_code, e.reports_to
+FROM orders o
+         JOIN customers c ON o.customer_id = c.customer_id
+         JOIN employees e ON o.employee_id = e.employee_id;
+
+
+SELECT *
+FROM orders_details
+ORDER BY ship_country;
+
+
+DROP VIEW IF EXISTS renamed_orders_details;
